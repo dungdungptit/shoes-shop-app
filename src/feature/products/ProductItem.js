@@ -40,7 +40,7 @@ const ProductItemStyled = styled(Box)(({ theme }) => ({
         '& .product-item__name': {
             '& h3': {
                 cursor: 'pointer',
-                fontSize: '16',
+                fontSize: 16,
                 fontWeight: 500,
                 color: '#333',
                 textTransform: 'capitalize',
@@ -60,7 +60,7 @@ const ProductItemStyled = styled(Box)(({ theme }) => ({
             '& p': {
                 fontSize: 16,
                 fontWeight: "bold",
-                color: '#333',
+                color: '#929292',
                 textTransform: 'capitalize',
                 textDecoration: 'line-through',
             },
@@ -114,11 +114,11 @@ const ProductItem = ({ product }) => {
                     <h3>{product.name}</h3>
                 </Box>
                 <div className="product-item__rating">
-                    <Rating name="read-only" value={product.rating} readOnly precision={0.5} />
+                    <Rating name="read-only" value={product.rating} readOnly precision={0.5} sx={{fontSize: 20}} />
                 </div>
                 <div className="product-item__price">
-                    <span>{getDiscount(product.price, 0.1)}₫</span>
-                    <p>{product.price}₫</p>
+                    <span>{getDiscount(product.price, 0.1).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
+                    <p>{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
                 </div>
                 <div className="product-item__discount">
                     <p>{0.1 * 100}%</p>

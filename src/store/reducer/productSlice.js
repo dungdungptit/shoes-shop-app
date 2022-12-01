@@ -4,14 +4,14 @@ import { BASE_URL } from '../../utils/axiosApi';
 
 // get all products
 export const getAllProductsAsync = createAsyncThunk('products/getAllProducts', async () => {
-    const response = await axios.get(`${BASE_URL}/item/allItem`);
+    const response = await axios.get(`${BASE_URL}/items/allItem`);
     console.log(response);
     return response.data;
 });
 
 // get product by id
 export const getProductByIdAsync = createAsyncThunk('products/getProductById', async (id) => {
-    const response = await axios.get(`${BASE_URL}/item/items/${id}`);
+    const response = await axios.get(`${BASE_URL}/items/item/${id}`);
     return response.data;
 });
 

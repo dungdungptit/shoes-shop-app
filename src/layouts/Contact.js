@@ -62,10 +62,12 @@ const Contact = () => {
         let currentScrollPos = window.pageYOffset;
         if(currentScrollPos > 0) {
             document.getElementById("header-top").style.display = "none";
+            document.getElementById("header-top").style.transition = "all 0.5s linear";
             setScroll(true);
         }
         else {
             document.getElementById("header-top").style.display = "block";
+            document.getElementById("header-top").style.transition = "all 0.5s linear";
             setScroll(false);
         }
     }

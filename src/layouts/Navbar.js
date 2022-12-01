@@ -1,7 +1,7 @@
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton, List } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // Logo
 import Logo from '../../src/assets/images/output-onlinepngtools.png';
 
@@ -67,6 +67,8 @@ const Navbar = () => {
         setAnchorElNav(null);
     };
 
+    const navigate = useNavigate();
+
     return (
         <RootStyle>
             <Contact />
@@ -126,7 +128,7 @@ const Navbar = () => {
                                 component={Link}
                                 to={page.linkTo}
                                 onClick={handleCloseNavMenu}>
-                                <Typography textAlign="center" color="#000" sx={{fontWeight: 'bold', fontSize: 14}}>{page.name}</Typography>
+                                <Typography textAlign="center" color="#000" sx={{ fontWeight: 'bold', fontSize: 14 }}>{page.name}</Typography>
                             </MenuItem>
                         ))}
                     </Menu>
@@ -171,7 +173,9 @@ const Navbar = () => {
 
                 <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
                     <Searchbar />
-                    <CartOuline />
+                    <Box onClick={() => navigate('/cart')}>
+                        <CartOuline />
+                    </Box>
                     <AccountPopover />
                 </Stack>
             </ToolbarStyle>

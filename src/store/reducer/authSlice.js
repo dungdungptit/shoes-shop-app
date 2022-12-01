@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { BASE_URL_AUTH } from '../ultils/axiosApi';
+import { BASE_URL_AUTH } from '../../utils/axiosApi';
 
 // login
 export const loginAsync = createAsyncThunk('auth/login', async (user) => {
-    const response = await axios.post(`${BASE_URL_AUTH}/login`, user);
-    console.log(response);
-    return response.data.data;
+    const response = await axios.get(`${BASE_URL_AUTH}/customer/login`, {params : user});
+    // console.log(response.data);
+    return response.data;
 });
 
 // register
 export const registerAsync = createAsyncThunk('auth/register', async (user) => {
-    const response = await axios.post(`${BASE_URL_AUTH}/register`, user);
+    const response = await axios.post(`${BASE_URL_AUTH}/customer/register`, user);
     return response.data.data;
 });
 
@@ -44,9 +44,7 @@ const authSlice = createSlice({
             console.log(action.payload);
             state.isLoading = false;
             state.user = action.payload;
-            state.token = action.payload.accessToken;
             localStorage.setItem('user', JSON.stringify(action.payload));
-            localStorage.setItem('token', JSON.stringify(action.payload.accessToken));
             state.isAuth = true;
         },
         [loginAsync.rejected]: (state, action) => {
@@ -62,7 +60,6 @@ const authSlice = createSlice({
         [registerAsync.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.user = action.payload;
-            state.token = action.payload.accessToken;
             state.isAuth = true;
         },
         [registerAsync.rejected]: (state, action) => {

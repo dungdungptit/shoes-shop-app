@@ -3,18 +3,20 @@ import { Stack } from '@mui/system'
 import { React, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-// import { loginAsync } from '../../store/reducers/authSlice'
+
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import bg_login from '../../assets/images/bg_login.jpg'
 import bg0_login from '../../assets/images/bg0_login.jpg'
+import { loginAsync } from '../../store/reducer/authSlice'
+
 const LoginForm = () => {
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [user, setUser] = useState({
-    phone: '',
+    username: '',
     password: ''
   })
 
@@ -30,10 +32,7 @@ const LoginForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    // dispatch(loginAsync(user))
-
-    // localStorage.setItem('user', JSON.stringify(user))
-    console.log(user)
+    dispatch(loginAsync(user))
     navigate('/')
   }
 
@@ -109,7 +108,7 @@ const LoginForm = () => {
               Create an account
             </Link>
           </Typography>
-          <TextField id="outlined-basic" sx={{ width: "100%", mb: 2 }} label="Username" variant="outlined" name='phone'
+          <TextField id="outlined-basic" sx={{ width: "100%", mb: 2 }} label="Username" variant="outlined" name='username'
             defaultValue={user.username} onChange={onChange} />
           <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">

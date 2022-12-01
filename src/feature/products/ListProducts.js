@@ -37,6 +37,7 @@ const ListProducts = () => {
     const [page, setPage] = React.useState(1);
 
     const ListProducts = useSelector(productsSelector);
+    // const ListProducts = dataProducts;
     const [data, setData] = React.useState([]);
     const dispatch = useDispatch();
 
