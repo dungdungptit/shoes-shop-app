@@ -12,6 +12,7 @@ export const loginAsync = createAsyncThunk('auth/login', async (user) => {
 // register
 export const registerAsync = createAsyncThunk('auth/register', async (user) => {
     const response = await axios.post(`${BASE_URL_AUTH}/customer/register`, user);
+    console.log(response.data);
     return response.data.data;
 });
 

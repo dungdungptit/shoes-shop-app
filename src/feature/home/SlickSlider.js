@@ -28,11 +28,11 @@ const SlickSliderStyle = styled(Box)(({ theme }) => ({
         position: "relative",
         bottom: 0,
         '& li': {
-            width: '20px',
-            height: '20px',
+            width: '16px',
+            height: '16px',
             '& button': {
-                width: '20px',
-                height: '20px',
+                width: '16px',
+                height: '16px',
                 borderRadius: '50%',
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 '&:before': {
@@ -80,12 +80,12 @@ const SlickSlider = () => {
     var settings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 300,
         slidesToShow: 1,
         slidesToScroll: 1,
         fade: true,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 3000,
     };
     return (
         <SlickSliderStyle>
@@ -93,48 +93,48 @@ const SlickSlider = () => {
                 <SliderItem>
                     <Stack direction="row" spacing={2} sx={{ width: '100%', height: '100%', maxWidth: 1200, margin: '0 auto', }}>
                         <SliderContent>
-                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>Nike Air Max 270 React</Typography>
-                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>The Nike Air Max 270 React is a new hybrid model that combines the Air Max 270 with the React foam sole.</Typography>
-                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Shop Now</Button>
+                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>GIÀY NIKE SB DELTA FORCE VULC NAM - TRẮNG</Typography>
+                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>Giày Nike SB Delta Force Vulc mẫu giày thời trang basic không bao giờ lỗi mốt, chắc chắn ai cũng sẽ cần một đôi để có thể đi bất cứ nơi đâu đều rất phù hợp...</Typography>
+                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Mua ngay</Button>
                         </SliderContent>
                         <SliderImage>
-                            <img className="slick-slide-item-img" src={slickslider0} alt="" />
+                            <img className="slick-slide-item-img" src="https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668787373/PTTK/Item2/giay-nike-sb-delta-force-vulc-nam-trang-01-550x550_lzlcja.jpg" alt="" />
                         </SliderImage>
                     </Stack>
                 </SliderItem>
                 <SliderItem>
                     <Stack direction="row" spacing={2} sx={{ width: '100%', height: '100%', maxWidth: 1200, margin: '0 auto', }}>
                         <SliderContent>
-                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>Nike Air Max 270 React</Typography>
-                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>The Nike Air Max 270 React is a new hybrid model that combines the Air Max 270 with the React foam sole.</Typography>
-                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Shop Now</Button>
+                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>GIÀY ADIDAS SUPERNOVA+ NAM - ĐEN TRẮNG</Typography>
+                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>Giày adidas Supernova+ là mẫu giày thể thao có thiết kế rất đẹp, cùng với đó là công nghệ đỉnh cao với những vật liệu cao cấp độc quyền của Adidas. adidas Supernova+ là mẫu giày mà dân thể thao không thể bỏ qua....</Typography>
+                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Mua ngay</Button>
                         </SliderContent>
                         <SliderImage>
-                            <img className="slick-slide-item-img" src={slickslider0} alt="" />
+                            <img className="slick-slide-item-img" src="https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668791356/PTTK/Item5/giay-adidas-supernova_-nam-den-trang-02-550x550_vgynxu.jpg" alt="" />
                         </SliderImage>
                     </Stack>
                 </SliderItem>
                 <SliderItem>
                     <Stack direction="row" spacing={2} sx={{ width: '100%', height: '100%', maxWidth: 1200, margin: '0 auto', }}>
                         <SliderContent>
-                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>Nike Air Max 270 React</Typography>
-                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>The Nike Air Max 270 React is a new hybrid model that combines the Air Max 270 with the React foam sole.</Typography>
-                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Shop Now</Button>
+                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>GIÀY NIKE AIR FLIGHT LEGACY LAKERS NAM - TRẮNG</Typography>
+                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>Giày Nike Air Flight Legacy một mẫu giày thời trang cổ trung đầy mê hoặc. Lấy cảm hứng từ dòng giày bóng rổ nổi tiếng, Nike Air Flight Legacy chắc chắn là sản phẩm mà tín đồ thời trang không thể bỏ qua...</Typography>
+                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Mua ngay</Button>
                         </SliderContent>
                         <SliderImage>
-                            <img className="slick-slide-item-img" src={slickslider0} alt="" />
+                            <img className="slick-slide-item-img" src="https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668787790/PTTK/Item4/giay-nike-air-flight-legacy-lakers-nam-trang-01-550x550_kuxijy.jpg" alt="" />
                         </SliderImage>
                     </Stack>
                 </SliderItem>
                 <SliderItem>
                     <Stack direction="row" spacing={2} sx={{ width: '100%', height: '100%', maxWidth: 1200, margin: '0 auto', }}>
                         <SliderContent>
-                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>Nike Air Max 270 React</Typography>
-                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}>The Nike Air Max 270 React is a new hybrid model that combines the Air Max 270 with the React foam sole.</Typography>
-                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Shop Now</Button>
+                            <Typography variant="h3" sx={{ color: 'black', textAlign: "start" }}>GIÀY NIKE QUEST 4 NAM- XÁM CAM</Typography>
+                            <Typography variant="h5" sx={{ color: 'black', fontSize: 18, mt: 4, mb: 1 }}> Giày Giày Nike Quest 4 là mẫu giày được thiết kế cực kỳ đẹp và tinh tế với đặc điểm rất thoáng khí, êm và rất nhẹ. Đây là mẫu giày có thể sử dụng trong mọi hoạt động hàng ngày...</Typography>
+                            <Button variant="contained" sx={{ backgroundColor: 'black', color: 'white', marginTop: '20px' }}>Mua ngay</Button>
                         </SliderContent>
                         <SliderImage>
-                            <img className="slick-slide-item-img" src={slickslider0} alt="" />
+                            <img className="slick-slide-item-img" src="https://res.cloudinary.com/dp4fkm6ke/image/upload/v1668787505/PTTK/Item3/giay-nike-quest-4-nam-xam-cam-01-550x550_lrgcfm.jpg" alt="" />
                         </SliderImage>
                     </Stack>
                 </SliderItem>

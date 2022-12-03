@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const ProductItemStyled = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
+    maxHeight: 'max-content',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -15,8 +16,8 @@ const ProductItemStyled = styled(Box)(({ theme }) => ({
     transition: 'all 0.3s ease',
     backgroundColor: '#fff',
     "&:hover": {
-       transform: 'scale(1.01)',
-       boxShadow: "0px 8px 45px rgb(3 0 71 / 9%)",
+        transform: 'scale(1.01)',
+        boxShadow: "0px 8px 45px rgb(3 0 71 / 9%)",
     },
     '& .product-item__image': {
         width: '100%',
@@ -44,6 +45,10 @@ const ProductItemStyled = styled(Box)(({ theme }) => ({
                 fontWeight: 500,
                 color: '#333',
                 textTransform: 'capitalize',
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                width: '252px',
             },
         },
         '& .product-item__price': {
@@ -83,7 +88,7 @@ const ProductItemStyled = styled(Box)(({ theme }) => ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontWeight: 500,  
+            fontWeight: 500,
             color: '#fff',
             borderRadius: '10px 0 10px 0',
             background: '#faaf00',
@@ -114,7 +119,7 @@ const ProductItem = ({ product }) => {
                     <h3>{product.name}</h3>
                 </Box>
                 <div className="product-item__rating">
-                    <Rating name="read-only" value={product.rating} readOnly precision={0.5} sx={{fontSize: 20}} />
+                    <Rating name="read-only" value={product.rating} readOnly precision={0.5} sx={{ fontSize: 20 }} />
                 </div>
                 <div className="product-item__price">
                     <span>{getDiscount(product.price, 0.1).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>

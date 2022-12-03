@@ -6,7 +6,7 @@ import { getProductByIdAsync, productSelector } from '../store/reducer/productSl
 import Slider from "react-slick";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ProductDetailTab from '../feature/products/ProductDetailTab';
-import { addToCartAsync } from '../store/reducer/cartSlice';
+import { addToCartAsync, cartsSelector, countCartSelector, getCartByCustomerIdAsync, setCountCart } from '../store/reducer/cartSlice';
 
 const ProductDetailStyle = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -166,15 +166,15 @@ const ProductDetail = () => {
   //     "id": 5
   //   }
   //   ));
-    const user = JSON.parse(localStorage.getItem('user'));
-  // const product = useSelector(productSelector)
-  const product = productDetail;
+  const user = JSON.parse(localStorage.getItem('user'));
+  const product = useSelector(productSelector)
+  // const product = productDetail;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // console.log(product);
-  // useEffect(() => {
-  //   dispatch(getProductByIdAsync(productId));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getProductByIdAsync(productId));
+  }, [dispatch]);
 
   const [currentSlide, setCurrentSlide] = React.useState(
     product ? { images: [product.image1, product.image2, product.image3] } : { images: [productDetail.image1, productDetail.image2, productDetail.image3] }
@@ -214,9 +214,34 @@ const ProductDetail = () => {
   const handleIncreaseQuantity = () => {
     setQuantity(Number(quantity) + 1);
   }
+  const cartItems = useSelector(cartsSelector);
 
+  const countCart = useSelector(countCartSelector);
+  useEffect(() => {
+    dispatch(getCartByCustomerIdAsync(user?.customerID.id));
+    dispatch(setCountCart(cartItems.length));
+  }, []);
+
+  useEffect(() => {
+    console.log("add");
+  }, [cartItems]);
   // add to cart
   const handleAddToCart = () => {
+    const cartItem = {
+      customerID: user?.customerID.id,
+      itemID: product.id,
+      quantity: quantity,
+    }
+    dispatch(addToCartAsync(cartItem)).then(() => {
+      dispatch(setCountCart(cartItems.length));
+      dispatch(getCartByCustomerIdAsync(user?.customerID.id));
+    });
+  }
+
+
+
+
+  const handleBuyNow = () => {
     const cartItem = {
       customerID: user?.customerID.id,
       itemID: product.id,

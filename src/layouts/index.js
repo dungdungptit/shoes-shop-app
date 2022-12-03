@@ -3,6 +3,7 @@ import Navbar from './Navbar';
 import { Outlet } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
+import Footer from './Footer';
 
 
 const APP_BAR_MOBILE = 24;
@@ -41,6 +42,7 @@ const Layout = () => {
             <MainStyle>
                 <Outlet />
             </MainStyle>
+            <Footer />
         </RootStyle>
     )
 }

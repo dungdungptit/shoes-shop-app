@@ -5,19 +5,14 @@ import {account} from "../data/account";
 
 const MENU_OPTIONS = [
     {
-        label: 'Home',
+        label: 'Thông tin tài khoản',
         icon: 'eva:home-fill',
         linkTo: '/',
     },
     {
-        label: 'Profile',
+        label: 'Đơn hàng',
         icon: 'eva:person-fill',
-        linkTo: '#',
-    },
-    {
-        label: 'Settings',
-        icon: 'eva:settings-2-fill',
-        linkTo: '#',
+        linkTo: '/order',
     },
 ];
 

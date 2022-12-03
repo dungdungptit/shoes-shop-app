@@ -25,17 +25,22 @@ export const updateCartAsync = createAsyncThunk('cart/updateCart', async (data) 
 
 // delete 1 item in cart
 export const deleteItemInCartAsync = createAsyncThunk('cart/deleteItemInCart', async (data) => {
-    const {itemId, customerId} = data;
-    const response = await axios.delete(`${BASE_URL}/carts/delete?${itemId}&customerId=${customerId}`);
+    const {cartID} = data;
+    const response = await axios.delete(`${BASE_URL}/carts/delete`, {params: {cartID}});
     return response.data;
 });
 
 // delete all item in cart
-export const deleteAllItemInCartAsync = createAsyncThunk('cart/deleteAllItemInCart', async (customerId) => {
-    const response = await axios.delete(`${BASE_URL}/carts/deleteAll?customerId=${customerId}`);
+export const deleteAllItemInCartAsync = createAsyncThunk('cart/deleteAllItemInCart', async (customerID) => {
+    const response = await axios.delete(`${BASE_URL}/carts/deleteAll`, {params: {customerID}});
     return response.data;
 });
 
+// payment
+export const paymentAsync = createAsyncThunk('cart/payment', async (data) => {
+    const response = await axios.post(`${BASE_URL}/payment`, data);
+    return response.data;
+});
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
@@ -153,6 +158,7 @@ const cartSlice = createSlice({
             }
           ],
         cart: null,
+        countCart: 0,
         isLoading: false,
         error: null,
     },
@@ -161,6 +167,9 @@ const cartSlice = createSlice({
             const {cartID, quantity} = action.payload;
             const index = state.carts.findIndex((cart) => cart.id === cartID);
             state.carts[index].quantity = quantity;
+        },
+        setCountCart: (state, action) => {
+            state.countCart = action.payload;
         },
     },
     extraReducers: {
@@ -236,7 +245,9 @@ const cartReducer = cartSlice.reducer;
 
 export const cartsSelector = state => state.cartReducer.carts;
 export const cartSelector = state => state.cartReducer.cart;
+export const countCartSelector = state => state.cartReducer.countCart;
 
-export const {updateQuantity} = cartSlice.actions;
+export const {updateQuantity, setCountCart} = cartSlice.actions;
+
 
 export default cartReducer;

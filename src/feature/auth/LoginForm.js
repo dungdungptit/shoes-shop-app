@@ -15,6 +15,7 @@ import { loginAsync } from '../../store/reducer/authSlice'
 const LoginForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
   const [user, setUser] = useState({
     username: '',
     password: ''
@@ -30,10 +31,24 @@ const LoginForm = () => {
     event.preventDefault();
   };
 
+  const [validateMsg, setValidateMsg] = useState("")
+
   const onSubmit = (e) => {
     e.preventDefault()
-    dispatch(loginAsync(user))
-    navigate('/')
+    dispatch(loginAsync(user)).then(res => {
+      // if (res.payload.status === 200) {
+      console.log(res);
+      // }
+      if (res.type === "auth/login/rejected") {
+        console.log("Sai tài khoản hoặc mật khẩu");
+        setValidateMsg(
+          "Sai tài khoản hoặc mật khẩu"
+        )
+      }
+      else {
+        navigate('/')
+      }
+    })
   }
 
   const onChange = (e) => {
@@ -85,7 +100,7 @@ const LoginForm = () => {
           boxSizing: 'border-box',
           width: '100%',
           margin: '0 auto',
-          p: { xs: "48px 12px", md: "48px 64px",},
+          p: { xs: "48px 12px", md: "48px 64px", },
           bgcolor: '#fff',
           borderRadius: 4,
         }}>
@@ -103,7 +118,7 @@ const LoginForm = () => {
             Sign in to Shoes Shop
           </Typography>
           <Typography variant='body1' sx={{ fontWeight: 400, width: "100%", color: '#000', textAlign: 'start', fontSize: "1rem", mb: 4 }}>
-            New user? 
+            New user?
             <Link href="/register" underline="hover" sx={{ color: '#000', fontWeight: 600, ml: 1 }}>
               Create an account
             </Link>
@@ -138,6 +153,12 @@ const LoginForm = () => {
           <Typography variant='body2' component="a" sx={{ cursor: "pointer", "&:hover": { color: '#000' }, width: "100%", color: '#000', fontSize: "0.875rem", my: 2, display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
             Fogot password?
           </Typography>
+
+          {validateMsg && (
+            <Typography variant='body1' sx={{ fontWeight: 400, width: "100%", color: '#f44336', textAlign: 'start', fontSize: "1rem", mb: 1 }}>
+              {validateMsg}
+            </Typography>
+          )}
           <Button variant="contained"
             sx={{
               width: "100%", bgcolor: '#212b36', color: '#fff', textDecoration: 'none',

@@ -1,10 +1,11 @@
-import { Box, Button, styled, TextField } from '@mui/material';
+import { Box, Button, Checkbox, styled, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { dataProducts } from '../../src/data/products';
 import CartItem from '../feature/cart/CartItem';
-import { cartSelector, cartsSelector, getCartByCustomerIdAsync, updateCartAsync } from '../store/reducer/cartSlice';
+import { cartSelector, cartsSelector, deleteAllItemInCartAsync, getCartByCustomerIdAsync, updateCartAsync } from '../store/reducer/cartSlice';
 import "../../src/components/table-style.css";
+import { useNavigate } from 'react-router-dom';
 
 const CartStyle = styled(Box)(({ theme }) => ({
   width: '100%',
@@ -12,11 +13,12 @@ const CartStyle = styled(Box)(({ theme }) => ({
   maxWidth: 1200,
   margin: '0 auto',
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   alignItems: 'flex-start',
   gap: '20px',
   paddingTop: '24px',
   justifyContent: 'space-between',
+  position: 'relative',
 }));
 
 const ButtonQuantity = styled(Button)(({ theme }) => ({
@@ -37,6 +39,7 @@ const ButtonQuantity = styled(Button)(({ theme }) => ({
 const getFormattedPrice = (price) => `${price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`;
 
 const Cart = () => {
+  const [listCartSelected, setListCartSelected] = useState([]);
   const [checkedState, setCheckedState] = useState(
     new Array(dataProducts.length).fill(false)
   );
@@ -161,14 +164,18 @@ const Cart = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem('user'));
   // console.log(user);
-  // useEffect(() => {
-  //   dispatch(getCartByCustomerIdAsync(user.customerID.id));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCartByCustomerIdAsync(user?.customerID.id));
+  }, [dispatch]);
   console.log(cartItems);
 
   const handleCheckAll = () => {
     setCheckedState(new Array(cartItems.length).fill(!isCheckAll));
     setIsCheckAll(!isCheckAll);
+    setListCartSelected(cartItems.map((item) => item));
+    if (isCheckAll) {
+      setListCartSelected([]);
+    }
     const totalPrice = cartItems.reduce((total, product) => {
       return total + product.item.price * product.quantity;
     }, 0);
@@ -180,6 +187,10 @@ const Cart = () => {
       index === position ? !item : item
     );
 
+    setListCartSelected(
+      cartItems.filter((item, index) => updatedCheckedState[index])
+    );
+
     setCheckedState(updatedCheckedState);
     setIsCheckAll(updatedCheckedState.every(Boolean));
 
@@ -189,44 +200,134 @@ const Cart = () => {
     setTotal(totalPrice);
   };
 
+  console.log("listCartSelected", listCartSelected);
+
+  const handleDeleteAllItem = () => {
+    dispatch(deleteAllItemInCartAsync(user?.customerID.id));
+    setCheckedState(new Array(cartItems.length).fill(false));
+    setIsCheckAll(false);
+    setListCartSelected([]);
+    setTotal(0);
+  };
+
+  const navigate = useNavigate();
+  const handlePayment = () => {
+    navigate('/payment', { state: { listCartSelected, total } });
+  };
+
+  useEffect(() => {
+    setListCartSelected(cartItems.filter((item, index) => checkedState[index]));
+  }, [cartItems]);
+
   return (
     <CartStyle>
-      <div className="App">
-        <div class="table-responsive">
-          <table class="table table-primary">
-            <thead>
-              <tr>
-                <th scope="col"><input type="checkbox" onChange={handleCheckAll} checked={isCheckAll} /> Sản phẩm</th>
-                <th scope="col">Đơn giá</th>
-                <th scope="col">Số lượng</th>
-                <th scope="col">Số tiền</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map(({ id, item, quantity }, index) => {
-                return (
-                  <CartItem
-                    key={index}
-                    id={id}
-                    item={item}
-                    quantity={quantity}
-                    checkedState={checkedState}
-                    handleOnChange={handleOnChange}
-                    index={index}
-                    getFormattedPrice={getFormattedPrice}
-                    cartItems={cartItems}
-                    setTotal={setTotal}
+      <div className="table-responsive" style={{ width: '100%' }}>
+        <table className="table table-primary">
+          <thead>
+            <tr>
+              <th scope="col">
+                <Box component="span" sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Checkbox
+                    checked={isCheckAll}
+                    onChange={handleCheckAll}
+                    inputProps={{ 'aria-label': 'controlled' }}
                   />
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <div className="toppings-list-item">
-          <div className="left-section">Total:</div>
-          <div className="right-section">{getFormattedPrice(total)}</div>
-        </div>
+                  <Typography variant="p" color="text.primary" sx={{ ml: 1 }}>
+                    Sản phẩm
+                  </Typography>
+                </Box>
+                {/* <input type="checkbox" onChange={handleCheckAll} checked={isCheckAll} /> Sản phẩm */}
+              </th>
+              <th scope="col">Đơn giá</th>
+              <th scope="col">Số lượng</th>
+              <th scope="col">Số tiền</th>
+              <th scope="col">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map(({ id, item, quantity }, index) => {
+              return (
+                <CartItem
+                  key={index}
+                  id={id}
+                  item={item}
+                  quantity={quantity}
+                  checkedState={checkedState}
+                  handleOnChange={handleOnChange}
+                  index={index}
+                  getFormattedPrice={getFormattedPrice}
+                  cartItems={cartItems}
+                  setTotal={setTotal}
+                />
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        maxWidth: 1200,
+        margin: '0 auto',
+        width: '100%',
+        // position: 'absolute',
+        // bottom: -50,
+        // left: 0,
+        // right: 0,
+      }}>
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '20px 0',
+          paddingLeft: '10px',
+        }}>
+          <Checkbox
+            checked={isCheckAll}
+            onChange={handleCheckAll}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+          <Typography variant="h6" color="text.primary" sx={{ mx: 1 }}>
+            Chọn tất cả ({cartItems.length})
+          </Typography>
+          <Box
+            component={"form"} onSubmit={handleDeleteAllItem}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              component={"button"}
+              type="submit"
+              variant="h6"
+              sx={{
+                border: "none",
+                background: "none",
+                color: '000',
+                cursor: 'pointer',
+              }}
+
+            >Xóa</Typography>
+          </Box>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          mr: '20px',
+        }}>
+          <Typography variant="h6" color="text.primary" sx={{ mr: 2 }}>
+            Tổng thanh toán ({listCartSelected.length} sản phẩm):
+          </Typography>
+          <Typography variant="h6" color="text.primary">
+            {getFormattedPrice(total)}
+          </Typography>
+          <Button variant="contained" sx={{ ml: 2 }}
+            onClick={handlePayment}
+          >Mua hàng</Button>
+        </Box>
+      </Box>
     </CartStyle >
   )
 }

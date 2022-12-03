@@ -19,6 +19,7 @@ const ListProductsStyle = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
     display: 'grid',
+    marginTop: '24px',
     gridTemplateColumns: 'repeat(3, 1fr)',
     gridGap: '20px',
     [theme.breakpoints.down('md')]: {
@@ -58,7 +59,6 @@ const ListProducts = () => {
     }, [page, ListProducts]);
     return (
         <ListProductsContainer>
-            <h1>Products</h1>
             <ListProductsStyle>
                 {!!data && data.map((product, index) => (
                     <ProductItem key={index} product={product} />

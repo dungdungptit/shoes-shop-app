@@ -1,7 +1,8 @@
-import { Box, Button, OutlinedInput, styled, TextField } from '@mui/material'
-import React from 'react'
-import { useDispatch } from 'react-redux';
-import { updateCartAsync, updateQuantity } from '../../store/reducer/cartSlice';
+import { Box, Button, Checkbox, IconButton, Link, OutlinedInput, styled, TextField, Typography } from '@mui/material'
+import React, { useEffect } from 'react'
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch, useSelector } from 'react-redux';
+import { cartsSelector, deleteItemInCartAsync, getCartByCustomerIdAsync, updateCartAsync, updateQuantity } from '../../store/reducer/cartSlice';
 
 const ButtonQuantity = styled(Button)(({ theme }) => ({
     width: 40,
@@ -23,9 +24,14 @@ const CartItem = ({ item, quantity, id, index, checkedState, handleOnChange, get
     const [quantityItem, setQuantityItem] = React.useState(quantity);
     const [totalItem, setTotalItem] = React.useState(quantity * item.price);
 
+    const user = JSON.parse(localStorage.getItem('user'));
+
     const handleOnChangeQuantity = (e) => {
         console.log("value change", e.target.value);
-        const value = document.getElementById(`quantity-${index}`).value;
+        let value = document.getElementById(`quantity-${index}`).value;
+        if (value > item?.shoesID?.quantity) {
+            value = item?.shoesID?.quantity
+        }
         if (Number(value) > 0) {
             setQuantityItem(quantityItem => Number(value));
             setTotalItem(Number(value) * item.price);
@@ -46,26 +52,62 @@ const CartItem = ({ item, quantity, id, index, checkedState, handleOnChange, get
         }
     }
 
+    useEffect(() => {
+        const value = document.getElementById(`quantity-${index}`).value;
+        value > item?.shoesID?.quantity ? document.getElementById(`quantity-${index}`).value = item?.shoesID?.quantity : document.getElementById(`quantity-${index}`).value = value;
+        // setQuantityItem(quantityItem => Number(value));
+        quantityItem > item?.shoesID?.quantity && setQuantityItem(item?.shoesID?.quantity);
+        if (checkedState[index]) {
+            if (Number(value) > quantity) {
+                setTotal(total => total + (Number(value) - quantityItem) * item.price);
+            } else {
+                setTotal(total => total - (quantityItem - Number(value)) * item.price);
+            }
+        }
+    }, [quantityItem])
+
+    const handleDeleteItem = () => {
+        dispatch(deleteItemInCartAsync({ cartID: id }));
+        if (checkedState[index]) {
+            setTotal(total => total - item.price * quantityItem);
+        }
+    }
+
     return (
         <tr style={{ padding: '10px 0', borderBottom: '1px solid #cbcbcb' }}>
             <td className="left-section">
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <input
+                    <Checkbox
+                        checked={checkedState[index]}
+                        onChange={() => handleOnChange(index)}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        id={`custom-checkbox-${index}`}
+                    />
+                    {/* <input
                         type="checkbox"
                         id={`custom-checkbox-${index}`}
                         name={item?.name}
                         value={item?.name}
                         checked={checkedState[index]}
                         onChange={() => handleOnChange(index)}
-                    />
-                    <h3>{item.name}</h3>
+                    /> */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                        <img src={item?.image1} alt={item.name} width="100px" height="100px" />
+                        <Typography variant="body1"
+                            component={Link}
+                            href={`/products/${item?.shoesID?.id}`}
+                            sx={{
+                                ml: 1,
+                                textWrap: 'wrap',
+                                fontSize: '14px',
+                            }}>{item?.name}</Typography>
+                    </Box>
                 </Box>
                 {/* <label htmlFor={`custom-checkbox-${index}`}>{item?.name}</label> */}
             </td>
             <td style={{
                 // display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px' 
             }}>
-                <img src={item?.image1} alt={item.name} width="100px" height="100px" />
                 <Box sx={{
                     // display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '10px' 
                 }}>
@@ -127,17 +169,46 @@ const CartItem = ({ item, quantity, id, index, checkedState, handleOnChange, get
                             },
                         }}
                         variant="outlined"
-                        value={Number(quantityItem)}
+                        value={Number(quantityItem) < item?.shoesID.quantity ? Number(quantityItem) : item?.shoesID.quantity}
                         onChange={handleOnChangeQuantity}
                     />
                     <ButtonQuantity variant="outlined" onClick={() => {
-                        setQuantityItem(Number(quantityItem) + 1);
-                        dispatch(updateQuantity({ cartID: id, quantity: Number(quantityItem) + 1 }));
-                        dispatch(updateCartAsync({ cartID: id, quantity: Number(quantityItem) + 1 }));
-                        if (checkedState[index]) {
-                            setTotal(total => total + item.price);
+                        if (quantityItem < item?.shoesID.quantity) {
+                            console.log("quantityItem", quantityItem);
+                            setQuantityItem(Number(quantityItem) + 1);
+                            dispatch(updateQuantity({ cartID: id, quantity: Number(quantityItem) + 1 }));
+                            dispatch(updateCartAsync({ cartID: id, quantity: Number(quantityItem) + 1 }));
+                            if (checkedState[index]) {
+                                setTotal(total => total + item.price);
+                            }
                         }
                     }}>+</ButtonQuantity>
+                </Box>
+            </td>
+            <td>
+                <Box>
+                    <p>{getFormattedPrice(item.price * quantityItem)}</p>
+                </Box>
+            </td>
+            <td>
+                <Box
+                    component={"form"} onSubmit={handleDeleteItem}
+                >
+                    <Typography
+                        component={"button"}
+                        type="submit"
+                        variant="body1"
+                        sx={{
+                            border: "none",
+                            background: "none",
+                            color: '#ff0000',
+                            cursor: 'pointer',
+                            "&:hover": {
+                                textDecoration: 'underline',
+                            }
+                        }}
+
+                    >Xóa</Typography>
                 </Box>
             </td>
         </tr>

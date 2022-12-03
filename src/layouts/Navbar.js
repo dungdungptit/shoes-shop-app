@@ -1,6 +1,6 @@
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton, List } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, IconButton, List, Badge } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 // Logo
 import Logo from '../../src/assets/images/output-onlinepngtools.png';
@@ -52,8 +52,10 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 
 
 const pages = [
-    { name: 'Home', linkTo: "home" },
-    { name: 'Shop', linkTo: "products" },
+    { name: 'Trang chủ', linkTo: "home" },
+    { name: 'Sản phẩm', linkTo: "products" },
+    { name: 'Giới thiệu', linkTo: "about" },
+    { name: 'Liên hệ', linkTo: "contact" },
 ]
 
 const Navbar = () => {
