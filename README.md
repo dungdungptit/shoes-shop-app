@@ -1,13 +1,6 @@
-# Backend 
-# Link demo: https://shoes-shop-app.vercel.app/
-
-
-
-
-
-
-
-
+# Backend https://github.com/luandao1012/PTTK
+# Frontend: 
+Link demo: https://shoes-shop-app.vercel.app/
 
 # Getting Started with Create React App
 
